@@ -44,7 +44,6 @@ public class entryServlet extends HttpServlet {
 				resp.sendRedirect("/index.html");
 				i=1;
 			}
-			
 		}
 		}
 		if(i==0) // 쿠키에 저장된 내용이 없으면 loing.html 을 연결.

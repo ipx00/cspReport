@@ -47,7 +47,7 @@ public class UpdateMemberServlet extends HttpServlet {
 		}
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/plain");
-	
+		
 		resp.getWriter().println("<html>");
 		resp.getWriter().println("<body>");
 		resp.getWriter().println("<h1>" + "다음과 같이 해당 팀원의 정보가 수정되었습니다" + "</h1>");
