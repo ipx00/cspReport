@@ -6,6 +6,7 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class UpdateMemberServlet extends HttpServlet {
 	
@@ -33,6 +34,17 @@ public class UpdateMemberServlet extends HttpServlet {
 		tm.setGitid(gitid);
 		tm.setChk_info(check);
 		pm.close();
+		//session
+		String UserID = null;
+		HttpSession session = req.getSession(false);
+		if(session == null)
+		{
+			resp.getWriter().println("로그인 하시기 바랍니다");
+		}
+		else
+		{
+			UserID = (String) session.getAttribute("userloginID");
+		}
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/plain");
 	
@@ -40,6 +52,9 @@ public class UpdateMemberServlet extends HttpServlet {
 		resp.getWriter().println("<body>");
 		resp.getWriter().println("<h1>" + "다음과 같이 해당 팀원의 정보가 수정되었습니다" + "</h1>");
 		resp.getWriter().println("<table border=1>");
+		resp.getWriter().println("<tr>");
+		resp.getWriter().println("현재 "+ UserID + "님이 로그인 중입니다");
+		resp.getWriter().println("</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"이름  " +"</td>" +"<td>" + name + "</td>" + "</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"학번  " +"</td>" +"<td>" + id + "</td>" + "</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"전화번호 : " +"</td>" +"<td>" + num + "</td>" + "</tr>");

@@ -8,6 +8,7 @@ import javax.jdo.Query;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class RetriveTeamMemberServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -17,13 +18,25 @@ public class RetriveTeamMemberServlet extends HttpServlet {
 		PersistenceManager pm = MyPersistenceManager.getManager();
 		Query qry = pm.newQuery(TeamMember.class);
 		List<TeamMember> memberList = (List<TeamMember>) qry.execute();
-		
+		String UserID = null;
+		HttpSession session = req.getSession(false);
+		if(session == null)
+		{
+			resp.getWriter().println("로그인 하시기 바랍니다");
+		}
+		else
+		{
+			UserID = (String) session.getAttribute("userloginID");
+		}
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/plain");
 	
 		resp.getWriter().println("<html>");
 		resp.getWriter().println("<body>");
 		resp.getWriter().println("<table border='1'>");
+		resp.getWriter().println("<tr>");
+		resp.getWriter().println("현재 "+ UserID + "님이 로그인 중입니다");
+		resp.getWriter().println("</tr>");
 		resp.getWriter().println("<tr>");
 		resp.getWriter().println("<th>"+"이름" + "</th>" );	//맨처음행 
 		resp.getWriter().println("<th>"+"학번" + "</th>" );

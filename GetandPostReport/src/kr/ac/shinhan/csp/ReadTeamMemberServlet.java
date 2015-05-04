@@ -6,6 +6,7 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ReadTeamMemberServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -14,9 +15,17 @@ public class ReadTeamMemberServlet extends HttpServlet {
 		
 		String key =  req.getParameter("key");
 		Long longKey = Long.parseLong(key);
-		
+		String UserID = null;
+		HttpSession session = req.getSession(false);
+		if(session == null)
+		{
+			resp.getWriter().println("로그인 하시기 바랍니다");
+		}
+		else
+		{
+			UserID = (String) session.getAttribute("userloginID");
+		}
 		PersistenceManager pm = MyPersistenceManager.getManager();
-		
 		TeamMember tm = pm.getObjectById(TeamMember.class, longKey);
 		
 		String name = tm.getName();
@@ -32,10 +41,12 @@ public class ReadTeamMemberServlet extends HttpServlet {
 		
 		resp.getWriter().println("<html>");
 		resp.getWriter().println("<body>");
-		resp.getWriter().println("<h1>"+ "팀원 정보 수정" + "<h1>");
+		resp.getWriter().println("<h1>"+ "팀원 정보 수정" + "</h1>");
 		resp.getWriter().println("<form method ="+"'POST'" + "action =/updatemember?key="+ tm.getKey() +">");
 		resp.getWriter().println("<table border=" + "1"+">");
-		
+		resp.getWriter().println("<tr>");
+		resp.getWriter().println("현재 "+ UserID + "님이 로그인 중입니다");
+		resp.getWriter().println("</tr>");
 		resp.getWriter().println("<tr>"+"<td>"+"이름"+"</td>"+"<td>"+"<input type ="+"'text'" +"name="+ "'name'" + "value="+name+  ">" + "</td>"+"</tr>");
 		resp.getWriter().println("<tr>"+"<td>"+"학번"+"</td>"+"<td>"+"<input type ="+"'text'" +"name="+ "'id'" +  "value="+id+ ">" + "</td>"+"</tr>");
 		resp.getWriter().println("<tr>"+"<td>"+"전화번호"+"</td>"+"<td>"+"<input type ="+"'text'" +"name="+ "'num'" + "value="+num+  ">" + "</td>"+"</tr>");

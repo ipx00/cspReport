@@ -6,6 +6,7 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
 public class GetandPostReportServlet extends HttpServlet {
@@ -23,9 +24,18 @@ public class GetandPostReportServlet extends HttpServlet {
 		TeamMember tm = new TeamMember(name,id,num,email,kakaoid,gitid,check);
 		PersistenceManager pm = MyPersistenceManager.getManager();
 		pm.makePersistent(tm);
-		
-		
-		
+		//session
+		String UserID = null;
+		HttpSession session = req.getSession(false);
+		if(session == null)
+		{
+			resp.getWriter().println("로그인 하시기 바랍니다");
+		}
+		else
+		{
+			UserID = (String) session.getAttribute("userloginID");
+		}
+	
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/plain");
 	
@@ -33,6 +43,9 @@ public class GetandPostReportServlet extends HttpServlet {
 		resp.getWriter().println("<body>");
 		resp.getWriter().println("<h1>" + "다음과 같은 새로운 팀원이 등록되었습니다" + "</h1>");
 		resp.getWriter().println("<table border=1>");
+		resp.getWriter().println("<tr>");
+		resp.getWriter().println("현재 "+ UserID + "님이 로그인 중입니다");
+		resp.getWriter().println("</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"이름  " +"</td>" +"<td>" + name + "</td>" + "</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"학번  " +"</td>" +"<td>" + id + "</td>" + "</tr>");
 		resp.getWriter().println("<tr>"+ "<td>" +"전화번호 : " +"</td>" +"<td>" + num + "</td>" + "</tr>");
